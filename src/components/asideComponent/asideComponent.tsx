@@ -8,6 +8,8 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
+import SearchCharacter from "../searchCharacter/searchCharacter";
+
 const AsideComponent = () => {
     return (
         <Box
@@ -54,11 +56,7 @@ const AsideComponent = () => {
                             <Typography>Search panel</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Typography>
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Suspendisse malesuada lacus ex,
-                                sit amet blandit leo lobortis eget.
-                            </Typography>
+                            <SearchCharacter />
                         </AccordionDetails>
                     </Accordion>
                 </Grid>

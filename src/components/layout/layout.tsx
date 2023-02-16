@@ -71,7 +71,15 @@ const Layout = () => {
             >
                 <HeaderComponent />
                 <Grid container spacing={1} sx={{ flexGrow: 1 }}>
-                    <Grid item xs={10}>
+                    <Grid
+                        item
+                        xs={10}
+                        sx={{
+                            flexGrow: 1,
+                            display: "flex",
+                            justifyContent: "center",
+                        }}
+                    >
                         <Outlet />
                     </Grid>
                     <Grid item xs={2} sx={{ height: "100%" }}>

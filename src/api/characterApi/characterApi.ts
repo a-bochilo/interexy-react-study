@@ -18,7 +18,7 @@ export const getCharacterById = async (id: string) => {
             any,
             AxiosResponse<ICharacterData, any>,
             any
-        >(`/${id}`);
+        >(`/character/${id}`);
         return data;
     } catch {
         console.error("Fetch character by id failure");
@@ -31,7 +31,7 @@ export const getCharactersByIdArr = async (id: number[]) => {
             any,
             AxiosResponse<ICharacterData[], any>,
             any
-        >(`/${id}`);
+        >(`/character/${id}`);
         return data;
     } catch {
         console.error("Fetch characters by id's array failure");
