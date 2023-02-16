@@ -15,7 +15,16 @@ interface IGridContentContainerProps extends GridProps {
 }
 
 const GridContentContainer = styled(Grid, {
-    shouldForwardProp: (prop) => prop !== "isSideBarOpen",
+    shouldForwardProp: (prop) => {
+        switch (prop) {
+            case "isSideBarOpen":
+            case "openedSideBarWidth":
+            case "closedSideBarWidth":
+                return false;
+            default:
+                return true;
+        }
+    },
 })<IGridContentContainerProps>(
     ({ theme, isSideBarOpen, openedSideBarWidth, closedSideBarWidth }) => ({
         position: "relative",
@@ -56,7 +65,6 @@ const Layout = () => {
             />
             <GridContentContainer
                 item
-                spacing={1}
                 isSideBarOpen={isSideBarOpen}
                 openedSideBarWidth={openedSideBarWidth}
                 closedSideBarWidth={closedSideBarWidth}

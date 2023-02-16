@@ -1,4 +1,5 @@
 import * as React from "react";
+import { NavLink } from "react-router-dom";
 import { styled, Theme, CSSObject } from "@mui/material/styles";
 import MuiDrawer, { DrawerProps } from "@mui/material/Drawer";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -44,7 +45,16 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 const Drawer = styled(MuiDrawer, {
-    shouldForwardProp: (prop) => prop !== "open",
+    shouldForwardProp: (prop) => {
+        switch (prop) {
+            case "isSideBarOpen":
+            case "openedSideBarWidth":
+            case "closedSideBarWidth":
+                return false;
+            default:
+                return true;
+        }
+    },
 })<IDrawerProps>(({ theme, open, openedSideBarWidth, closedSideBarWidth }) => ({
     flexShrink: 0,
     whiteSpace: "nowrap",
@@ -104,19 +114,24 @@ const SideBar = ({
                 )}
             </DrawerHeader>
             <List sx={{ backgroundColor: "red", height: "100%" }}>
-                {["Inbox", "Starred", "Send email", "Drafts"].map((text) => (
+                {[
+                    { label: "Home", url: "/" },
+                    { label: "Characters", url: "/characters" },
+                ].map(({ label, url }) => (
                     <ListItem
-                        key={text}
+                        key={label}
                         disablePadding
                         sx={{ display: isSideBarOpen ? "block" : "none" }}
                     >
-                        <ListItemButton
-                            sx={{
-                                minHeight: 48,
-                            }}
-                        >
-                            <ListItemText primary={text} />
-                        </ListItemButton>
+                        <NavLink to={url}>
+                            <ListItemButton
+                                sx={{
+                                    minHeight: 48,
+                                }}
+                            >
+                                <ListItemText primary={label} />
+                            </ListItemButton>
+                        </NavLink>
                     </ListItem>
                 ))}
             </List>
