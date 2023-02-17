@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { NavLink, useParams } from "react-router-dom";
 
@@ -15,13 +15,43 @@ import {
     TableHead,
     TableRow,
 } from "@mui/material";
+import styled from "@emotion/styled";
+import { useTranslation } from "react-i18next";
 
 import {
     ICharacterData,
     getCharacterById,
 } from "../../api/characterApi/characterApi";
 
-const SingleCharcterLayout = () => {
+interface ISingleCharacterPage {
+    name: string;
+    gender: string;
+    location: string;
+    species: string;
+    status: string;
+    objLinkTitle: string;
+    buttonLabel: string;
+}
+
+const StyledCard = styled(Card)`
+    width: 80%;
+    background-color: lightgreen;
+    margin: 15px;
+    display: flex;
+    flex-flow: row nowrap;
+    table {
+        * {
+            font-size: 17px;
+        }
+
+        thead th {
+            font-size: 20px;
+            font-weight: 700;
+        }
+    }
+`;
+
+const SingleCharcterPage = () => {
     const { id } = useParams();
     const [characterData, setCharacterData] = useState<null | ICharacterData>();
 
@@ -36,6 +66,10 @@ const SingleCharcterLayout = () => {
         );
     }, [id]);
 
+    const { t } = useTranslation("", {
+        keyPrefix: "singleCharacterPage",
+    });
+
     const showCharacterCard = ({
         name,
         image,
@@ -46,34 +80,26 @@ const SingleCharcterLayout = () => {
         url,
     }: ICharacterData) => {
         return (
-            <Card
-                sx={{
-                    width: "80%",
-                    backgroundColor: "lightgreen",
-                    margin: "15px",
-                    display: "flex",
-                    flexFlow: "row nowrap",
-                }}
-            >
+            <StyledCard>
                 <CardMedia image={image} title={name} component={"img"} />
                 <TableContainer component={CardContent}>
                     <Table aria-label="Character data">
                         <TableHead>
                             <TableRow>
-                                <TableCell>Name</TableCell>
+                                <TableCell>{t("name")}</TableCell>
                                 <TableCell align="right">{name}</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             <TableRow>
                                 <TableCell component="th" scope="row">
-                                    Gender
+                                    {t("gender")}
                                 </TableCell>
                                 <TableCell align="right">{gender}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">
-                                    Location
+                                    {t("location")}
                                 </TableCell>
                                 <TableCell align="right">
                                     {location.name}
@@ -81,13 +107,13 @@ const SingleCharcterLayout = () => {
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">
-                                    Species
+                                    {t("species")}
                                 </TableCell>
                                 <TableCell align="right">{species}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">
-                                    Status
+                                    {t("status")}
                                 </TableCell>
                                 <TableCell align="right">
                                     <Chip
@@ -102,7 +128,7 @@ const SingleCharcterLayout = () => {
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">
-                                    Learn object look
+                                    {t("objLinkTitle")}
                                 </TableCell>
                                 <TableCell align="right">
                                     <NavLink to={url}>
@@ -110,7 +136,7 @@ const SingleCharcterLayout = () => {
                                             variant="contained"
                                             size="small"
                                         >
-                                            GO!
+                                            {t("buttonLabel")}
                                         </Button>
                                     </NavLink>
                                 </TableCell>
@@ -118,11 +144,11 @@ const SingleCharcterLayout = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-            </Card>
+            </StyledCard>
         );
     };
 
     return <>{characterData && showCharacterCard(characterData)}</>;
 };
 
-export default SingleCharcterLayout;
+export default SingleCharcterPage;

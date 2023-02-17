@@ -1,5 +1,6 @@
 import { Avatar, Autocomplete, TextField, Box } from "@mui/material";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -12,6 +13,9 @@ const SearchCharacter = () => {
         null | ICharacterData[]
     >();
     const navigate = useNavigate();
+    const { t } = useTranslation("", {
+        keyPrefix: "aside.searchCharacter",
+    });
 
     const getAndSetCharactersList = () => {
         getAllCharacters().then((fetchedData: ICharacterData[] | undefined) => {
@@ -22,8 +26,7 @@ const SearchCharacter = () => {
 
     const autocompleteProps = {
         options: charactersData ?? [],
-        getOptionLabel: (option: ICharacterData) =>
-            option?.name ?? "Still fetching...",
+        getOptionLabel: (option: ICharacterData) => option?.name ?? t("stub"),
     };
 
     return (
@@ -50,7 +53,7 @@ const SearchCharacter = () => {
                     </Box>
                 )}
                 renderInput={(characters) => (
-                    <TextField {...characters} label="Characters" />
+                    <TextField {...characters} label={t("inputLabel")} />
                 )}
                 onFocus={getAndSetCharactersList}
             />

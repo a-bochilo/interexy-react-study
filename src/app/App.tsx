@@ -1,19 +1,19 @@
 import { Route, Routes } from "react-router-dom";
 
 import Layout from "../components/layout/layout";
-import ArticlesLayout from "../components/pages/articlesLayout";
-import CharactersLayout from "../components/pages/charactersLayout";
-import SingleCharcterLayout from "../components/pages/singleCharacterLayout";
+import ArticlesPage from "../components/pages/articlesPage";
+import CharactersPage from "../components/pages/charactersPage";
+import SingleCharcterPage from "../components/pages/singleCharacterPage";
 
 function App() {
     return (
         <Routes>
             <Route element={<Layout />}>
-                <Route path="/" element={<ArticlesLayout />} />
-                <Route path="/characters" element={<CharactersLayout />} />
+                <Route path="/" element={<ArticlesPage />} />
+                <Route path="/characters" element={<CharactersPage />} />
                 <Route
                     path="/characters/:id"
-                    element={<SingleCharcterLayout />}
+                    element={<SingleCharcterPage />}
                 />
             </Route>
         </Routes>

@@ -10,7 +10,7 @@ import {
 } from "../../api/characterApi/characterApi";
 import CharacterCard from "../characterCard/characterCard";
 
-const CharactersLayout = () => {
+const CharactersPage = () => {
     const isInitialLoading = useRef(true);
     const [charactersData, setCharactersData] = useState<
         null | ICharacterData[]
@@ -51,4 +51,4 @@ const CharactersLayout = () => {
     return <>{charactersData && showCharactersList(charactersData)}</>;
 };
 
-export default CharactersLayout;
+export default CharactersPage;

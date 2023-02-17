@@ -7,53 +7,67 @@ import {
     Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { styled } from "@mui/material/styles";
+
+import { useTranslation } from "react-i18next";
 
 import SearchCharacter from "../searchCharacter/searchCharacter";
 
+interface IAccordionData {
+    id: string;
+    title: string;
+    details?: string;
+}
+
+let StyledBox = styled(Box)`
+    height: 100%;
+    padding: 15px;
+    background-color: red;
+
+    .css-ffjoah-MuiGrid-root {
+        flex-grow: 1;
+        align-content: bottom;
+
+        & > *:not(:first-of-type) {
+            margin-top: 10px;
+        }
+    }
+`;
+StyledBox = styled(StyledBox)(({ theme }) => ({
+    backgroundColor: theme.palette.secondary.light,
+}));
+
 const AsideComponent = () => {
+    const { t } = useTranslation();
+    const [accordion1, accordion2]: IAccordionData[] = t("aside.accordions", {
+        returnObjects: true,
+    });
+
     return (
-        <Box
-            sx={{
-                height: "100%",
-                padding: 2,
-                backgroundColor: "red",
-            }}
-        >
-            <Grid
-                container
-                direction={"column"}
-                spacing={1}
-                sx={{
-                    flexGrow: 1,
-                    alignContent: "top",
-                }}
-            >
-                <Grid item sx={{ marginBottom: "10px" }}>
+        <StyledBox>
+            <Grid container direction={"column"} spacing={1}>
+                <Grid item>
                     <Accordion>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel1a-content"
-                            id="panel1a-header"
+                            id={accordion1.id}
                         >
-                            <Typography>Accordion 1</Typography>
+                            <Typography>{accordion1.title}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Typography>
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Suspendisse malesuada lacus ex,
-                                sit amet blandit leo lobortis eget.
-                            </Typography>
+                            <Typography>{accordion1.details}</Typography>
                         </AccordionDetails>
                     </Accordion>
                 </Grid>
-                <Grid item columnSpacing={2}>
+                <Grid item>
                     <Accordion>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel2a-content"
-                            id="panel2a-header"
+                            id={accordion2.id}
                         >
-                            <Typography>Search panel</Typography>
+                            <Typography>{accordion2.title}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <SearchCharacter />
@@ -61,7 +75,7 @@ const AsideComponent = () => {
                     </Accordion>
                 </Grid>
             </Grid>
-        </Box>
+        </StyledBox>
     );
 };
 

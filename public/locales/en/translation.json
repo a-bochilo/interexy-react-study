@@ -1,0 +1,68 @@
+{
+    "articles": [
+        {
+            "id": 1,
+            "title": "First titile",
+            "text": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus reprehenderit delectus maiores autem aut nostrum optio, aliquid possimus rem vitae fugit iusto, eveniet magni alias nemo eos magnam, iste doloremque culpa quasi. Quidem accusantium minus facere iusto maiores nobis perspiciatis excepturi sapiente accusamus ad voluptatibus fugit inventore debitis, ducimus placeat."
+        },
+        {
+            "id": 2,
+            "title": "Second titile",
+            "text": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus reprehenderit delectus maiores autem aut nostrum optio, aliquid possimus rem vitae fugit iusto, eveniet magni alias nemo eos magnam, iste doloremque culpa quasi. Quidem accusantium minus facere iusto maiores nobis perspiciatis excepturi sapiente accusamus ad voluptatibus fugit inventore debitis, ducimus placeat."
+        },
+        {
+            "id": 3,
+            "title": "Third titile",
+            "text": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus reprehenderit delectus maiores autem aut nostrum optio, aliquid possimus rem vitae fugit iusto, eveniet magni alias nemo eos magnam, iste doloremque culpa quasi. Quidem accusantium"
+        },
+        {
+            "id": 4,
+            "title": "Fourth titile",
+            "text": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus reprehenderit delectus maiores autem aut nostrum optio, aliquid poss Quidem accusantium minus facere iusto maiores nobis perspiciatis excepturi sapiente accusamus ad voluptatibus fugit inventore debitis, ducimus placeat."
+        },
+        {
+            "id": 5,
+            "title": "Fifth titile",
+            "text": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus reprehenderit delectus maiores autem aut nostrum optio, aliquid poss Quidem accusantium minus facere iusto maiores nobis perspiciatis excepturi sapiente accusamus ad voluptatibus fugit inventore debitis, ducimus placeat."
+        }
+    ],
+    "aside": {
+        "accordions": [
+            {
+                "id": 1,
+                "title": "Accordion",
+                "details": "Lorem ipsum olor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget."
+            },
+            {
+                "id": 2,
+                "title": "Search panel"
+            }
+        ],
+        "searchCharacter": {
+            "stub": "Please wait. Still fetching...",
+            "inputLabel": "Chose character"
+        }
+    },
+    "footer": {
+        "label": "Footer"
+    },
+    "header": {
+        "label": "Interexy react study project"
+    },
+    "singleCharacterPage": {
+        "name": "Name",
+        "gender": "Gender",
+        "location": "Location",
+        "species": "Species",
+        "status": "Status",
+        "objLinkTitle": "Learn object look",
+        "buttonLabel": "GO!"
+    },
+    "navigation": {
+        "links": [
+            { "label": "Home", "url": "/" },
+            { "label": "Characters", "url": "/characters" },
+            { "label": "Animation", "url": "/animation" }
+        ]
+    }
+}
