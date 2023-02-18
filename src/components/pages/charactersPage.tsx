@@ -1,8 +1,9 @@
 import { useRef, useState, useEffect } from "react";
-
 import { useNavigate } from "react-router-dom";
 
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { useTranslation } from "react-i18next";
 
 import {
     getAllCharacters,
@@ -10,31 +11,53 @@ import {
 } from "../../api/characterApi/characterApi";
 import CharacterCard from "../characterCard/characterCard";
 
+const MyGrid = styled(Grid)`
+    justify-content: space-evenly;
+
+    button {
+        margin: 30px;
+    }
+`;
+
 const CharactersPage = () => {
     const isInitialLoading = useRef(true);
     const [charactersData, setCharactersData] = useState<
         null | ICharacterData[]
     >();
+    const [charactersToShow, setCharactersToShow] = useState<
+        ICharacterData[] | null
+    >();
+
     const navigate = useNavigate();
+
+    const { t } = useTranslation();
 
     useEffect(() => {
         if (!isInitialLoading.current) return;
         getAllCharacters().then((fetchedData: ICharacterData[] | undefined) => {
             if (!fetchedData) return;
             setCharactersData(fetchedData);
+            setCharactersToShow([...fetchedData.slice(0, 20)]);
         });
         isInitialLoading.current = false;
     }, []);
 
-    const showCharactersList = (charactersData: ICharacterData[]) => {
+    const loadMoreHandler = () => {
+        if (!charactersData) return;
+        setCharactersToShow((prev) => {
+            return prev
+                ? [
+                      ...prev,
+                      ...charactersData.slice(prev.length, prev.length + 20),
+                  ]
+                : [...charactersData.slice(0, 20)];
+        });
+    };
+
+    const showCharactersList = (charactersToShow: ICharacterData[]) => {
         return (
-            <Grid
-                container
-                spacing={2}
-                p={1}
-                sx={{ justifyContent: "space-evenly" }}
-            >
-                {charactersData.map((character: ICharacterData) => (
+            <MyGrid container spacing={2} p={1}>
+                {charactersToShow.map((character: ICharacterData) => (
                     <Grid key={character.id} item>
                         <CharacterCard
                             characterData={character}
@@ -44,11 +67,14 @@ const CharactersPage = () => {
                         />
                     </Grid>
                 ))}
-            </Grid>
+                <Button variant="contained" onClick={loadMoreHandler}>
+                    {t("loadMoreButtonLabel")}...
+                </Button>
+            </MyGrid>
         );
     };
 
-    return <>{charactersData && showCharactersList(charactersData)}</>;
+    return <>{charactersToShow && showCharactersList(charactersToShow)}</>;
 };
 
 export default CharactersPage;

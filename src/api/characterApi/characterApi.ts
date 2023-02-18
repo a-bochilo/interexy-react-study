@@ -39,19 +39,36 @@ export const getCharactersByIdArr = async (id: number[]) => {
 };
 
 export const getAllCharacters = async () => {
-    try {
-        const { data } = await $api.get<
-            any,
-            AxiosResponse<
-                {
-                    results: ICharacterData[];
-                },
+    const allCharacters: ICharacterData[] = [];
+    const getCharactersPage = async (url: string = "") => {
+        if (url === "0") url = "";
+        try {
+            const { data } = await $api.get<
+                any,
+                AxiosResponse<
+                    {
+                        info: { next: string | null };
+                        results: ICharacterData[];
+                    },
+                    any
+                >,
                 any
-            >,
-            any
-        >(`/character`);
-        return data.results;
-    } catch {
-        console.error("Fetch all characters failure");
+            >(`/character${url}`);
+            const results = data.results;
+            return results;
+        } catch {
+            console.error("Fetch all characters failure");
+        }
+    };
+    const promiseArr: Promise<ICharacterData[] | undefined>[] = [];
+    for (let i = 2; i < 43; i++) {
+        promiseArr.push(getCharactersPage(`/?page=${i}`));
     }
+    await Promise.all(promiseArr).then((resultsArr) => {
+        resultsArr.forEach((arr) => {
+            if (!arr) return;
+            allCharacters.push(...arr);
+        });
+    });
+    return allCharacters;
 };

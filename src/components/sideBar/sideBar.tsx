@@ -130,7 +130,7 @@ const SideBar = ({
 
     const MyLinksList = () => {
         return (
-            <List>
+            <List as={"nav"}>
                 {linksArray.map(({ label, url }) => (
                     <ListItem
                         key={label}

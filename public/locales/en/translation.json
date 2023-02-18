@@ -62,7 +62,8 @@
         "links": [
             { "label": "Home", "url": "/" },
             { "label": "Characters", "url": "/characters" },
-            { "label": "Animation", "url": "/animation" }
+            { "label": "Animation", "url": "/animations" }
         ]
-    }
+    },
+    "loadMoreButtonLabel": "Load more"
 }

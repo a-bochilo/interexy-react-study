@@ -64,5 +64,6 @@
             { "label": "Charaktere", "url": "/characters" },
             { "label": "Animation", "url": "/animation" }
         ]
-    }
+    },
+    "loadMoreButtonLabel": "Laden weitere"
 }

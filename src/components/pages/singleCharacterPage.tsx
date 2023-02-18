@@ -23,7 +23,7 @@ import {
     getCharacterById,
 } from "../../api/characterApi/characterApi";
 
-interface ISingleCharacterPage {
+interface ISingleCharacterPageKeys {
     name: string;
     gender: string;
     location: string;
@@ -70,7 +70,7 @@ const SingleCharcterPage = () => {
         keyPrefix: "singleCharacterPage",
     });
 
-    const showCharacterCard = ({
+    const renderCharacterCard = ({
         name,
         image,
         gender,
@@ -148,7 +148,7 @@ const SingleCharcterPage = () => {
         );
     };
 
-    return <>{characterData && showCharacterCard(characterData)}</>;
+    return <>{characterData && renderCharacterCard(characterData)}</>;
 };
 
 export default SingleCharcterPage;

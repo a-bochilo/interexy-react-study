@@ -1,5 +1,5 @@
-import { Avatar, Autocomplete, TextField, Box } from "@mui/material";
-import { useState } from "react";
+import { Autocomplete, TextField, Box } from "@mui/material";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
@@ -12,16 +12,19 @@ const SearchCharacter = () => {
     const [charactersData, setCharactersData] = useState<
         null | ICharacterData[]
     >();
+    const isInitialFetching = useRef<boolean>(true);
     const navigate = useNavigate();
     const { t } = useTranslation("", {
         keyPrefix: "aside.searchCharacter",
     });
 
     const getAndSetCharactersList = () => {
+        if (!isInitialFetching.current) return;
         getAllCharacters().then((fetchedData: ICharacterData[] | undefined) => {
             if (!fetchedData) return;
             setCharactersData(fetchedData);
         });
+        isInitialFetching.current = false;
     };
 
     const autocompleteProps = {
@@ -35,20 +38,16 @@ const SearchCharacter = () => {
                 {...autocompleteProps}
                 disablePortal
                 clearOnBlur
-                renderOption={(props, { name, image, id }: ICharacterData) => (
+                renderOption={(props, { name, id }: ICharacterData) => (
                     <Box
+                        {...props}
+                        key={id}
                         component="li"
                         sx={{ "& > img": { mr: 3, flexShrink: 0 } }}
-                        {...props}
                         onClick={() => {
                             navigate(`/characters/${id}`);
                         }}
                     >
-                        <Avatar
-                            alt={name}
-                            src={image}
-                            sx={{ width: 20, height: 20 }}
-                        />
                         {name}
                     </Box>
                 )}
