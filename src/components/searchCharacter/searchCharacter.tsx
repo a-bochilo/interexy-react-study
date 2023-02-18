@@ -1,34 +1,29 @@
-import { Autocomplete, TextField, Box } from "@mui/material";
-import { useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
-import {
-    getAllCharacters,
-    ICharacterData,
-} from "../../api/characterApi/characterApi";
+import { useTranslation } from "react-i18next";
+import { Autocomplete, TextField, Box } from "@mui/material";
+
+import { useAppDispatch, useAppSelector, RootState } from "../../store";
+import { fetchCharacters } from "../../reducers/charactersSlice";
+import { ICharacterData } from "../../api/characterApi/characterApi";
 
 const SearchCharacter = () => {
-    const [charactersData, setCharactersData] = useState<
-        null | ICharacterData[]
-    >();
-    const isInitialFetching = useRef<boolean>(true);
+    const dispatch = useAppDispatch();
+    const { characters, charactersFetchingStatus } = useAppSelector(
+        ({ characters }: RootState) => characters
+    );
+
     const navigate = useNavigate();
     const { t } = useTranslation("", {
         keyPrefix: "aside.searchCharacter",
     });
 
-    const getAndSetCharactersList = () => {
-        if (!isInitialFetching.current) return;
-        getAllCharacters().then((fetchedData: ICharacterData[] | undefined) => {
-            if (!fetchedData) return;
-            setCharactersData(fetchedData);
-        });
-        isInitialFetching.current = false;
+    const handleFocus = () => {
+        if (!characters.length) dispatch(fetchCharacters());
     };
 
     const autocompleteProps = {
-        options: charactersData ?? [],
+        options: characters ?? [],
         getOptionLabel: (option: ICharacterData) => option?.name ?? t("stub"),
     };
 
@@ -36,6 +31,7 @@ const SearchCharacter = () => {
         <>
             <Autocomplete
                 {...autocompleteProps}
+                loading={charactersFetchingStatus === "loading"}
                 disablePortal
                 clearOnBlur
                 renderOption={(props, { name, id }: ICharacterData) => (
@@ -54,7 +50,7 @@ const SearchCharacter = () => {
                 renderInput={(characters) => (
                     <TextField {...characters} label={t("inputLabel")} />
                 )}
-                onFocus={getAndSetCharactersList}
+                onFocus={handleFocus}
             />
         </>
     );

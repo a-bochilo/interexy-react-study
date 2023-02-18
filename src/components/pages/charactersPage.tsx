@@ -5,10 +5,10 @@ import { Button, Grid, CircularProgress } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 
-import {
-    getAllCharacters,
-    ICharacterData,
-} from "../../api/characterApi/characterApi";
+import { RootState, useAppDispatch, useAppSelector } from "../../store";
+import { fetchCharacters } from "../../reducers/charactersSlice";
+import { ICharacterData } from "../../api/characterApi/characterApi";
+
 import CharacterCard from "../characterCard/characterCard";
 
 const MyGrid = styled(Grid)`
@@ -22,9 +22,11 @@ const MyGrid = styled(Grid)`
 
 const CharactersPage = () => {
     const isInitialLoading = useRef(true);
-    const [charactersData, setCharactersData] = useState<
-        null | ICharacterData[]
-    >();
+    const dispatch = useAppDispatch();
+    const { characters, charactersFetchingStatus } = useAppSelector(
+        ({ characters }: RootState) => characters
+    );
+
     const [charactersToShow, setCharactersToShow] = useState<
         ICharacterData[] | null
     >();
@@ -34,24 +36,21 @@ const CharactersPage = () => {
     const { t } = useTranslation();
 
     useEffect(() => {
-        if (!isInitialLoading.current) return;
-        getAllCharacters().then((fetchedData: ICharacterData[] | undefined) => {
-            if (!fetchedData) return;
-            setCharactersData(fetchedData);
-            setCharactersToShow([...fetchedData.slice(0, 20)]);
-        });
+        if (!isInitialLoading.current || !!characters.length) return;
+        dispatch(fetchCharacters());
         isInitialLoading.current = false;
-    }, []);
+    }, [dispatch, characters.length]);
+
+    useEffect(() => {
+        setCharactersToShow(characters.slice(0, 20));
+    }, [characters]);
 
     const loadMoreHandler = () => {
-        if (!charactersData) return;
+        if (!characters) return;
         setCharactersToShow((prev) => {
             return prev
-                ? [
-                      ...prev,
-                      ...charactersData.slice(prev.length, prev.length + 20),
-                  ]
-                : [...charactersData.slice(0, 20)];
+                ? [...prev, ...characters.slice(prev.length, prev.length + 20)]
+                : [...characters.slice(0, 20)];
         });
     };
 
@@ -72,6 +71,7 @@ const CharactersPage = () => {
                     color="success"
                     variant="contained"
                     onClick={loadMoreHandler}
+                    disabled={charactersFetchingStatus === "loading"}
                 >
                     {t("buttons.loadMore")}...
                 </Button>
@@ -81,11 +81,8 @@ const CharactersPage = () => {
 
     return (
         <>
-            {charactersToShow ? (
-                showCharactersList(charactersToShow)
-            ) : (
-                <CircularProgress />
-            )}
+            {charactersFetchingStatus === "loading" && <CircularProgress />}
+            {charactersToShow && showCharactersList(charactersToShow)}
         </>
     );
 };

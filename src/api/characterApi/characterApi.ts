@@ -2,7 +2,7 @@ import $api from "../api";
 import { AxiosResponse } from "axios";
 
 export interface ICharacterData {
-    id: string;
+    id: number;
     name: string;
     image: string;
     gender: string;
@@ -12,7 +12,12 @@ export interface ICharacterData {
     url: string;
 }
 
-export const getCharacterById = async (id: string) => {
+// const mapCharacterData = (character: ICharacterData) => ({
+//     ...character,
+//     location: character.location.name,
+// });
+
+export const getCharacterById = async (id: number) => {
     try {
         const { data } = await $api.get<
             any,
