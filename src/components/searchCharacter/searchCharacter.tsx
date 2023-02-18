@@ -4,7 +4,10 @@ import { useTranslation } from "react-i18next";
 import { Autocomplete, TextField, Box } from "@mui/material";
 
 import { useAppDispatch, useAppSelector, RootState } from "../../store";
-import { fetchCharacters } from "../../reducers/charactersSlice";
+import {
+    fetchCharacters,
+    setCharacterByData,
+} from "../../reducers/charactersSlice";
 import { ICharacterData } from "../../api/characterApi/characterApi";
 
 const SearchCharacter = () => {
@@ -22,6 +25,11 @@ const SearchCharacter = () => {
         if (!characters.length) dispatch(fetchCharacters());
     };
 
+    const handleChoseCharacter = (character: ICharacterData) => {
+        dispatch(setCharacterByData(character));
+        navigate(`/characters/${character.id}`);
+    };
+
     const autocompleteProps = {
         options: characters ?? [],
         getOptionLabel: (option: ICharacterData) => option?.name ?? t("stub"),
@@ -34,17 +42,15 @@ const SearchCharacter = () => {
                 loading={charactersFetchingStatus === "loading"}
                 disablePortal
                 clearOnBlur
-                renderOption={(props, { name, id }: ICharacterData) => (
+                renderOption={(props, character: ICharacterData) => (
                     <Box
                         {...props}
-                        key={id}
+                        key={character.id}
                         component="li"
                         sx={{ "& > img": { mr: 3, flexShrink: 0 } }}
-                        onClick={() => {
-                            navigate(`/characters/${id}`);
-                        }}
+                        onClick={() => handleChoseCharacter(character)}
                     >
-                        {name}
+                        {character.name}
                     </Box>
                 )}
                 renderInput={(characters) => (

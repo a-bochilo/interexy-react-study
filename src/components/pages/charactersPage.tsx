@@ -6,7 +6,10 @@ import { styled } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 
 import { RootState, useAppDispatch, useAppSelector } from "../../store";
-import { fetchCharacters } from "../../reducers/charactersSlice";
+import {
+    fetchCharacters,
+    setCharacterByData,
+} from "../../reducers/charactersSlice";
 import { ICharacterData } from "../../api/characterApi/characterApi";
 
 import CharacterCard from "../characterCard/characterCard";
@@ -45,13 +48,18 @@ const CharactersPage = () => {
         setCharactersToShow(characters.slice(0, 20));
     }, [characters]);
 
-    const loadMoreHandler = () => {
+    const handleLoadMore = () => {
         if (!characters) return;
         setCharactersToShow((prev) => {
             return prev
                 ? [...prev, ...characters.slice(prev.length, prev.length + 20)]
                 : [...characters.slice(0, 20)];
         });
+    };
+
+    const handleChoseCharacter = (character: ICharacterData) => {
+        dispatch(setCharacterByData(character));
+        navigate(`/characters/${character.id}`);
     };
 
     const showCharactersList = (charactersToShow: ICharacterData[]) => {
@@ -61,16 +69,14 @@ const CharactersPage = () => {
                     <Grid key={character.id} item>
                         <CharacterCard
                             characterData={character}
-                            handleClick={() =>
-                                navigate(`/characters/${character.id}`)
-                            }
+                            handleClick={() => handleChoseCharacter(character)}
                         />
                     </Grid>
                 ))}
                 <Button
                     color="success"
                     variant="contained"
-                    onClick={loadMoreHandler}
+                    onClick={handleLoadMore}
                     disabled={charactersFetchingStatus === "loading"}
                 >
                     {t("buttons.loadMore")}...

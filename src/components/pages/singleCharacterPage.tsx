@@ -8,25 +8,29 @@ import SingleCharcterCard from "../singleCharacterCard/singleCharacterCard";
 
 import { RootState, useAppDispatch, useAppSelector } from "../../store";
 import {
-    characterChosen,
+    setCharacterById,
     fetchCharacterById,
 } from "../../reducers/charactersSlice";
 
 const SingleCharcterPage = () => {
     const dispatch = useAppDispatch();
-    const { characters, chosenCharacter, charactersFetchingStatus } =
-        useAppSelector(({ characters }: RootState) => characters);
+    const { characters, chosenCharacter } = useAppSelector(
+        ({ characters }: RootState) => characters
+    );
 
     const { id } = useParams();
 
     useEffect(() => {
         if (!id) return;
-        if (charactersFetchingStatus === "loading") return;
+        if (chosenCharacter && chosenCharacter.id === +id) return;
         if (!characters.length) {
-            console.log("fetch");
             dispatch(fetchCharacterById(+id));
+            return;
         }
-        if (characters.length) dispatch(characterChosen(+id));
+        if (characters.length) {
+            dispatch(setCharacterById(+id));
+            return;
+        }
     }, [id, dispatch]);
 
     return (

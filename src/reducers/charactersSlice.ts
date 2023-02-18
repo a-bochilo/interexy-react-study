@@ -36,10 +36,13 @@ const charactersSlice = createSlice({
     name: "characters",
     initialState,
     reducers: {
-        characterChosen: (state, action: PayloadAction<number>) => {
+        setCharacterById: (state, action: PayloadAction<number>) => {
             state.chosenCharacter = state.characters.find(
                 (character) => character.id === action.payload
             );
+        },
+        setCharacterByData: (state, action: PayloadAction<ICharacterData>) => {
+            state.chosenCharacter = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -73,4 +76,4 @@ const { actions, reducer } = charactersSlice;
 
 export default reducer;
 
-export const { characterChosen } = actions;
+export const { setCharacterById, setCharacterByData } = actions;
