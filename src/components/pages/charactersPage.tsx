@@ -16,6 +16,7 @@ const MyGrid = styled(Grid)`
 
     button {
         margin: 30px;
+        width: 100%;
     }
 `;
 
@@ -67,7 +68,11 @@ const CharactersPage = () => {
                         />
                     </Grid>
                 ))}
-                <Button variant="contained" onClick={loadMoreHandler}>
+                <Button
+                    color="success"
+                    variant="contained"
+                    onClick={loadMoreHandler}
+                >
                     {t("loadMoreButtonLabel")}...
                 </Button>
             </MyGrid>
