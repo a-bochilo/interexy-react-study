@@ -73,7 +73,7 @@ const CharactersPage = () => {
                     variant="contained"
                     onClick={loadMoreHandler}
                 >
-                    {t("loadMoreButtonLabel")}...
+                    {t("buttons.loadMore")}...
                 </Button>
             </MyGrid>
         );

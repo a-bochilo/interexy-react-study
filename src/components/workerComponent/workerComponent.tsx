@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 
 import { Button, TextField, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { useTranslation } from "react-i18next";
 
 const CustomBox = styled(Box)`
     display: flex;
@@ -41,6 +42,8 @@ const WorkerComponent = () => {
         isInitialLoading.current = false;
     }, []);
 
+    const { t } = useTranslation();
+
     const handleClick = () => {
         if (!worker) return;
         worker.postMessage(2000);
@@ -54,7 +57,7 @@ const WorkerComponent = () => {
                 disabled={isWorkerRunning}
                 onClick={handleClick}
             >
-                Run worker
+                {t("buttons.runWorker")}
             </Button>
             <TextField
                 disabled={!workerResult}

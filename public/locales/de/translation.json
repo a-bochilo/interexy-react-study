@@ -65,5 +65,8 @@
             { "label": "Animation", "url": "/animation" }
         ]
     },
-    "loadMoreButtonLabel": "Laden weitere"
+    "buttons": {
+        "loadMore": "Laden weitere",
+        "runWorker": "Laufen worker"
+    }
 }

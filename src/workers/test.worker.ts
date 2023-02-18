@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-restricted-globals
-self.onmessage = (message: MessageEvent<number>) => {
+onmessage = (message: MessageEvent<number>) => {
     console.log("Worker running");
     const num = message.data;
     const start = Date.now();

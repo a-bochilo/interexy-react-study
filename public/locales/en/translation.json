@@ -62,8 +62,12 @@
         "links": [
             { "label": "Home", "url": "/" },
             { "label": "Characters", "url": "/characters" },
-            { "label": "Animation", "url": "/animations" }
+            { "label": "Animation", "url": "/animations" },
+            { "label": "Charts", "url": "/charts" }
         ]
     },
-    "loadMoreButtonLabel": "Load more"
+    "buttons": {
+        "loadMore": "Load more",
+        "runWorker": "Run worker"
+    }
 }
