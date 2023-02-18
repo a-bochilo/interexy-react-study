@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
 import {
@@ -18,6 +18,7 @@ const CustomBox = styled(Box)`
     flex-grow: 1;
     height: 90%;
     justify-content: center;
+    align-items: center;
     display: flex;
 `;
 
@@ -82,7 +83,11 @@ const ChartsPage = () => {
 
     return (
         <CustomBox>
-            {workerData && <Line options={lineOptions} data={lineData} />}
+            {!workerData.length ? (
+                <CircularProgress />
+            ) : (
+                <Line options={lineOptions} data={lineData} />
+            )}
         </CustomBox>
     );
 };
