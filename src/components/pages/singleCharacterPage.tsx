@@ -12,8 +12,8 @@ import {
     TableBody,
     TableCell,
     TableContainer,
-    TableHead,
     TableRow,
+    CircularProgress,
 } from "@mui/material";
 import styled from "@emotion/styled";
 import { useTranslation } from "react-i18next";
@@ -23,7 +23,7 @@ import {
     getCharacterById,
 } from "../../api/characterApi/characterApi";
 
-interface ISingleCharacterPageKeys {
+type SingleCharacterKeys = {
     name: string;
     gender: string;
     location: string;
@@ -31,7 +31,11 @@ interface ISingleCharacterPageKeys {
     status: string;
     objLinkTitle: string;
     buttonLabel: string;
-}
+};
+
+type SingleCharacterEntries = {
+    [K in keyof SingleCharacterKeys]: [K, SingleCharacterKeys[K]];
+}[keyof SingleCharacterKeys][];
 
 const StyledCard = styled(Card)`
     width: 80%;
@@ -44,9 +48,12 @@ const StyledCard = styled(Card)`
             font-size: 17px;
         }
 
-        thead th {
-            font-size: 20px;
-            font-weight: 700;
+        .name {
+            th,
+            td {
+                font-size: 20px;
+                font-weight: 700;
+            }
         }
     }
 `;
@@ -66,77 +73,79 @@ const SingleCharcterPage = () => {
         );
     }, [id]);
 
-    const { t } = useTranslation("", {
-        keyPrefix: "singleCharacterPage",
+    const { t } = useTranslation();
+
+    const keysObj: SingleCharacterKeys = t("singleCharacterPage", {
+        returnObjects: true,
     });
 
-    const renderCharacterCard = ({
-        name,
-        image,
-        gender,
-        location,
-        species,
-        status,
-        url,
-    }: ICharacterData) => {
+    const keysEntries: SingleCharacterEntries = Object.entries(
+        keysObj
+    ) as SingleCharacterEntries;
+
+    const renerTableRows = (character: ICharacterData) => {
         return (
-            <StyledCard>
-                <CardMedia image={image} title={name} component={"img"} />
-                <TableContainer component={CardContent}>
-                    <Table aria-label="Character data">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>{t("name")}</TableCell>
-                                <TableCell align="right">{name}</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            <TableRow>
-                                <TableCell component="th" scope="row">
-                                    {t("gender")}
-                                </TableCell>
-                                <TableCell align="right">{gender}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">
-                                    {t("location")}
-                                </TableCell>
-                                <TableCell align="right">
-                                    {location.name}
-                                </TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">
-                                    {t("species")}
-                                </TableCell>
-                                <TableCell align="right">{species}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">
-                                    {t("status")}
-                                </TableCell>
-                                <TableCell align="right">
+            <>
+                {keysEntries.map(([key, text]) => {
+                    if (key === "buttonLabel" || key === "objLinkTitle") return;
+                    return (
+                        <TableRow
+                            key={character.id}
+                            className={key === "name" ? "name" : ""}
+                        >
+                            <TableCell component="th" scope="row">
+                                {text}:
+                            </TableCell>
+                            <TableCell align="right">
+                                {key === "location" ? (
+                                    character[key].name
+                                ) : key === "status" ? (
                                     <Chip
-                                        label={status}
+                                        label={character[key]}
                                         color={
-                                            status === "Alive"
+                                            character[key] === "Alive"
                                                 ? "success"
                                                 : "error"
                                         }
                                     />
-                                </TableCell>
-                            </TableRow>
+                                ) : (
+                                    character[key]
+                                )}
+                            </TableCell>
+                        </TableRow>
+                    );
+                })}
+            </>
+        );
+    };
+
+    const CharacterCardView = ({
+        character,
+    }: {
+        character: ICharacterData;
+    }) => {
+        return (
+            <StyledCard>
+                <CardMedia
+                    image={character.image}
+                    title={character.name}
+                    component={"img"}
+                />
+                <TableContainer component={CardContent}>
+                    <Table aria-label="Character data">
+                        <TableBody>
+                            {renerTableRows(character)}
                             <TableRow>
                                 <TableCell component="th" scope="row">
-                                    {t("objLinkTitle")}
+                                    {keysObj.objLinkTitle}:
                                 </TableCell>
                                 <TableCell align="right">
-                                    <NavLink to={url}>
+                                    <NavLink to={character.url}>
                                         <Button
                                             variant="contained"
                                             size="small"
                                         >
-                                            {t("buttonLabel")}
+                                            {keysObj.buttonLabel}
                                         </Button>
                                     </NavLink>
                                 </TableCell>
@@ -148,7 +157,15 @@ const SingleCharcterPage = () => {
         );
     };
 
-    return <>{characterData && renderCharacterCard(characterData)}</>;
+    return (
+        <>
+            {!characterData ? (
+                <CircularProgress />
+            ) : (
+                <CharacterCardView character={characterData} />
+            )}
+        </>
+    );
 };
 
 export default SingleCharcterPage;
