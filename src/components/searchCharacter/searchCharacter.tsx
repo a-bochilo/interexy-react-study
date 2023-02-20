@@ -40,6 +40,7 @@ const SearchCharacter = () => {
             <Autocomplete
                 {...autocompleteProps}
                 loading={charactersFetchingStatus === "loading"}
+                noOptionsText="Loading..."
                 disablePortal
                 clearOnBlur
                 renderOption={(props, character: ICharacterData) => (
