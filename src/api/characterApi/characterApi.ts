@@ -6,25 +6,31 @@ export interface ICharacterData {
     name: string;
     image: string;
     gender: string;
-    location: { name: string };
+    location: string;
     species: string;
     status: string;
     url: string;
 }
 
-// const mapCharacterData = (character: ICharacterData) => ({
-//     ...character,
-//     location: character.location.name,
-// });
+interface ICharacterIncomingData extends Omit<ICharacterData, "location"> {
+    location: { name: string };
+}
+
+const mapCharacterData = (
+    character: ICharacterIncomingData
+): ICharacterData => ({
+    ...character,
+    location: character.location.name,
+});
 
 export const getCharacterById = async (id: number) => {
     try {
         const { data } = await $api.get<
             any,
-            AxiosResponse<ICharacterData, any>,
+            AxiosResponse<ICharacterIncomingData, any>,
             any
         >(`/character/${id}`);
-        return data;
+        return mapCharacterData(data);
     } catch {
         console.error("Fetch character by id failure");
     }
@@ -34,10 +40,10 @@ export const getCharactersByIdArr = async (id: number[]) => {
     try {
         const { data } = await $api.get<
             any,
-            AxiosResponse<ICharacterData[], any>,
+            AxiosResponse<ICharacterIncomingData[], any>,
             any
         >(`/character/${id}`);
-        return data;
+        return data.map((character) => mapCharacterData(character));
     } catch {
         console.error("Fetch characters by id's array failure");
     }
@@ -53,13 +59,15 @@ export const getAllCharacters = async () => {
                 AxiosResponse<
                     {
                         info: { next: string | null };
-                        results: ICharacterData[];
+                        results: ICharacterIncomingData[];
                     },
                     any
                 >,
                 any
             >(`/character${url}`);
-            const results = data.results;
+            const results = data.results.map((character) =>
+                mapCharacterData(character)
+            );
             return results;
         } catch {
             console.error("Fetch all characters failure");

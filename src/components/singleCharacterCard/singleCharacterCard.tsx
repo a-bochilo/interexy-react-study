@@ -77,9 +77,7 @@ const SingleCharcterCard = ({ character }: { character: ICharacterData }) => {
                                 {text}:
                             </TableCell>
                             <TableCell align="right">
-                                {key === "location" ? (
-                                    character[key].name
-                                ) : key === "status" ? (
+                                {key === "status" ? (
                                     <Chip
                                         label={character[key]}
                                         color={
