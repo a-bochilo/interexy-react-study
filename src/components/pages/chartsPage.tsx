@@ -16,7 +16,7 @@ import { Line } from "react-chartjs-2";
 
 const CustomBox = styled(Box)`
     flex-grow: 1;
-    height: 90%;
+    width: 80%;
     justify-content: center;
     align-items: center;
     display: flex;
